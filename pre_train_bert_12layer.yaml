@@ -1,0 +1,51 @@
+description: Pre-training for BERT
+
+target:
+  # which virtual cluster you belong to (msrlabs, etc.). Everyone has access to "msrlabs".
+  vc: convaivc
+  # physical cluster to use (cam, gcr, rr1, rr2) or Azure clusters (eu1, eu2, etc.)
+  cluster: rr3
+  queue: bonus
+
+environment:
+  image: morningpig/pytorch:latest
+
+code:
+  # local directory of the code. this will be uploaded to the server.
+  # $CONFIG_DIR is expanded to the directory of this config file
+  local_dir: $CONFIG_DIR
+
+
+storage:
+  # You can tell PT to store results in a different container optimized for writing.
+  #output:
+  #  storage_account_name: convaiphilly
+  #  container_name: b360
+  #  # you can change the mount path to reference in your code
+  #  mount_dir: /B360
+
+  # If data is in a shared container for example, we can mount the storage to a specific path
+  shared_datastore:
+    storage_account_name: convaiphilly
+    container_name: siqi
+    # you can change the mount path to reference in your code
+    mount_dir: /ssd2
+
+# data:
+  # local_dir: $CONFIG_DIR/data
+  # remote_dir: /philly/rr3/convaivc/siqi/
+
+  # data upload is not required for this example
+
+# list of jobs to run, we run 2 jobs in this example
+jobs:
+  # name must be unique across the jobs
+- name: pretraining_bert
+  # one gpu
+  sku: G16
+  command:
+    # - pwd
+    # - ls
+    # - bash pretrain.sh roberta_medium 0.0005 16
+    - bash pretrain.sh roberta_medium 0.0009 16
+    # - bash pretrain.sh roberta_medium 0.0007 16

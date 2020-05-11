@@ -364,6 +364,18 @@ def base_architecture(args):
     args.encoder_layerdrop = getattr(args, 'encoder_layerdrop', 0.0)
 
 
+@register_model_architecture('roberta', 'roberta_small')
+def roberta_base_architecture(args):
+    args.encoder_layers = getattr(args, 'encoder_layers', 3)
+    base_architecture(args)
+
+
+@register_model_architecture('roberta', 'roberta_medium')
+def roberta_base_architecture(args):
+    args.encoder_layers = getattr(args, 'encoder_layers', 6)
+    base_architecture(args)
+
+
 @register_model_architecture('roberta', 'roberta_base')
 def roberta_base_architecture(args):
     base_architecture(args)
